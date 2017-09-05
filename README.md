@@ -38,3 +38,14 @@ Cargo.toml:
 [dependencies]
 fakestring = { git = "https://github.com/krdln/fakestring" }
 ```
+
+# Safety
+
+`FakeString` is implemented using `ManuallyDrop<String>`.
+
+This crate relies on the fact that all structures containing
+`FakeString` will have the same layout as the ones containing `String`.
+This is quite reasonable assumption, but:
+
+* A field order randomization (if ever implemented in Rust) may break it,
+* Using "optimization fuel" to selectively reorder structs may break it.
